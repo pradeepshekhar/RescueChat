@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">RescueChat</string>
+    <string name="send">send</string>
+    <string name="scan">Connect</string>
+    <string name="title_paired_devices">SECOND HOP DEVICES</string>
+    <string name="title_other_devices">FIRST HOP DEVICES</string>
+    <string name="none_paired">NO SECOND HOP DEVICES</string>
+    <string name="select_device">Select a Device to Connect</string>
+    <string name="none_found">No Devices Found</string>
+    <string name="scanning">SCANNING FOR DEVICES</string>
+    <string name="button_scan">scan for devices</string>
+    <string name="title_connected_to">Connected to</string>
+    <string name="title_connecting">Connecting...</string>
+    <string name="title_not_connected">Not connected</string>
+    <string name="not_connected">Not connected to a device</string>
+</resources>
