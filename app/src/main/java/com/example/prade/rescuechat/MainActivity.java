@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
                         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(readAddress);
                         chatService.connect(device, false);
                         try {
-                            Thread.sleep(1800);
+                            Thread.sleep(2000);
                         } catch (InterruptedException e) {
 //                            e.printStackTrace();
                         }
@@ -168,11 +168,12 @@ public class MainActivity extends AppCompatActivity {
             String b = splitNames[i + 1];
             String c = splitNames[i + 2];
             devices = new Devices(a, b, c);
-            //check if device already exists in table
+
+            //check if device already exists in table2
             int RSSI12 = dbHandler.isExits2(b);
+            int onehop = dbHandler.isExits1(b);
 
-
-            if(RSSI12!= 1000){  //This condition is satisfied when the device already exists in database
+            if(RSSI12!= 1000 && onehop == 1000){  //This condition is satisfied when the device already exists in database
                 String addressInter = dbHandler.addressInter(b);
                 int RSSI11 = dbHandler.rssi1(addressInter); //rssi between inter for path1 and us
                 int RSSI21 = dbHandler.rssi1(connectedDeviceAddress);
@@ -181,7 +182,7 @@ public class MainActivity extends AppCompatActivity {
                     dbHandler.updateRow2(devices, b, connectedDeviceName, connectedDeviceAddress);
                 }
             }
-            else if (RSSI12 == 1000){
+            else if (RSSI12 == 1000 && onehop == 1000){
                 //Add the new device into the table
                 dbHandler.addDevice2(devices, connectedDeviceName, connectedDeviceAddress);
             }
