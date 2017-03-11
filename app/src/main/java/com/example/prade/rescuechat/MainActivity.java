@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
                     byte[] writeBuf = (byte[]) msg.obj;
                     String writeMessage = new String(writeBuf);
                     if(writeMessage.startsWith("TID")) {
-                        writeMessage = writeMessage.substring(3);
-                        chatArrayAdapter.add("Me:\n" + writeMessage);
+//                        writeMessage = writeMessage.substring(3);
+//                        chatArrayAdapter.add("Me:\n" + writeMessage);
                     }
                     else if(writeMessage.startsWith("NFM")){
                         writeMessage = writeMessage.substring(20);
@@ -100,10 +100,13 @@ public class MainActivity extends AppCompatActivity {
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
-                    if(readMessage.startsWith("TID") && readMessage.length()>3)
+                    if(readMessage.startsWith("TID") )
                     {
-                        readMessage = readMessage.substring(3);
-                        addToTable(readMessage);
+//                        sendFromTable1();
+                        if(readMessage.length()>3) {
+                            readMessage = readMessage.substring(3);
+                            addToTable(readMessage);
+                        }
                     }
                     else if(readMessage.startsWith("NFM") && readMessage.length()>3)
                     {
@@ -158,6 +161,17 @@ public class MainActivity extends AppCompatActivity {
         }
     });
 
+//    private void sendFromTable1(){
+//        int count1 = dbHandler.getCount1();
+//        String recNames ="";
+//        String [] dbNames ;
+//        for(int i=0;i<count1;i++){
+//            dbNames = dbHandler.deviceAt1(i+1);
+//            recNames+= dbNames[0]+"\n"+dbNames[1]+"\n"+dbNames[2]+"\n";
+//        }
+//        recNames="TID"+recNames;
+//        sendMessage(recNames);
+//    }
     private void addToTable(String names)
     {
         //This function stores the second hop range devices data into "SecondHopDevices" table
@@ -246,21 +260,21 @@ public class MainActivity extends AppCompatActivity {
         dbHandler = new DeviceDBHandler(this);
 
         sendListButton.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        int count1 = dbHandler.getCount1();
-                        String recNames ="";
-                        String [] dbNames ;
-                        for(int i=0;i<count1;i++){
-                            dbNames = dbHandler.deviceAt1(i+1);
-                            recNames+= dbNames[0]+"\n"+dbNames[1]+"\n"+dbNames[2]+"\n";
-                        }
-                        recNames="TID"+recNames;
-                        sendMessage(recNames);
-//                        showToast();
+            new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int count1 = dbHandler.getCount1();
+                    String recNames ="";
+                    String [] dbNames ;
+                    for(int i=0;i<count1;i++){
+                        dbNames = dbHandler.deviceAt1(i+1);
+                        recNames+= dbNames[0]+"\n"+dbNames[1]+"\n"+dbNames[2]+"\n";
                     }
+                    recNames="TID"+recNames;
+                    sendMessage(recNames);
+//                        showToast();
                 }
+            }
         );
     }
 
@@ -304,8 +318,60 @@ public class MainActivity extends AppCompatActivity {
                 ScanDevices.DEVICE_2_ADDRESS);
         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(address);
         chatService.connect(device, secure);
+
+        Thread waitThread = new Thread(r);
+        waitThread.start();
+
     }
 
+    Handler waitMsgHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            int count1 = dbHandler.getCount1();
+            String recNames ="";
+            String [] dbNames ;
+            for(int i=0;i<count1;i++){
+                dbNames = dbHandler.deviceAt1(i+1);
+                recNames+= dbNames[0]+"\n"+dbNames[1]+"\n"+dbNames[2]+"\n";
+            }
+            recNames="TID"+recNames;
+            sendMessage2(recNames);
+        }
+    };
+
+    public void sendMessage2(String recNames2){
+        sendMessage(recNames2);
+    }
+    Runnable r = new Runnable() {
+        @Override
+        public void run() {
+//            // What do you want the thread to do
+//            long futureTime = (System.currentTimeMillis()+ 10000);//10 sec
+//
+//            while (System.currentTimeMillis()< futureTime){
+//                // Don't need to sync when you are not using a thread e,g, Tutorial 39
+//                synchronized(this){
+//                    try {
+//                        wait(futureTime - System.currentTimeMillis());
+//                    }catch(Exception e){}
+//                }
+//            }
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+//                            e.printStackTrace();
+            }
+            waitMsgHandler.sendEmptyMessage(0);
+
+        }
+    };
+//    public void wait1(){
+//        try {
+//            Thread.sleep(1500);
+//        } catch (InterruptedException e) {
+////                            e.printStackTrace();
+//        }
+//    }
     private void ensureDiscoverable() {
         if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(
