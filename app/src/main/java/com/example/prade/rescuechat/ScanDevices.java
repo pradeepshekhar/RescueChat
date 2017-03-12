@@ -44,6 +44,7 @@ public class ScanDevices  extends Activity{
 
     public static String DEVICE_ADDRESS = "deviceAddress";
     public static String DEVICE_2_ADDRESS = "device2Address";
+    public static String DEVICE_2_NAME = "device2Name";
     public static String DEVICE_NAMES = "devicename";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +116,7 @@ public class ScanDevices  extends Activity{
             Intent intent = new Intent();
             intent.putExtra(DEVICE_ADDRESS, address);
             intent.putExtra(DEVICE_2_ADDRESS, "");
-
+            intent.putExtra(DEVICE_2_NAME,"");
 
             setResult(Activity.RESULT_OK, intent);
             finish();
@@ -131,10 +132,13 @@ public class ScanDevices  extends Activity{
 
             String address = devicedata[3];
             String addressFinal = devicedata[1];
+            String nameFinal = devicedata[0];
+            MainActivity.nameFinal = nameFinal;
 
             Intent intent = new Intent();
             intent.putExtra(DEVICE_ADDRESS, address);
             intent.putExtra(DEVICE_2_ADDRESS, addressFinal);
+            intent.putExtra(DEVICE_2_NAME,nameFinal);
 
             setResult(Activity.RESULT_OK, intent);
             finish();

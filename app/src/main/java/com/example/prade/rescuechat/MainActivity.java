@@ -45,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     public static int connectFlag;
     public static String addressFinal;
+    public static String nameFinal;
+
     private Devices devices;
     private Devices devices1;
 
@@ -90,12 +92,12 @@ public class MainActivity extends AppCompatActivity {
                     }
                     else if(writeMessage.startsWith("NFM")){
                         writeMessage = writeMessage.substring(20);
-                        chatArrayAdapter.add("Me:\n" + writeMessage);
+                        chatArrayAdapter.add("Me to "+nameFinal+":\n" + writeMessage);
                     }
                     else if(writeMessage.startsWith("NF2"));
 //                        Don't display anything to the user
                     else
-                        chatArrayAdapter.add("Me:\n" + writeMessage);
+                        chatArrayAdapter.add("Me to "+connectedDeviceName+":\n" + writeMessage);
                     break;
                 case MESSAGE_READ:
                     byte[] readBuf = (byte[]) msg.obj;
@@ -238,10 +240,11 @@ public class MainActivity extends AppCompatActivity {
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(connectFlag == 1) {
-                    String message = chatText.getText().toString();
-                    sendMessage(message);
-                }
+//                if(connectFlag == 1) {
+//                    String message = chatText.getText().toString();
+//                    sendMessage(message);
+//                }
+//                else
                 if(connectFlag == 2) {
                     String message = chatText.getText().toString();
                     sendMessage("NFM"+addressFinal+message);
@@ -252,6 +255,10 @@ public class MainActivity extends AppCompatActivity {
 //                    }
                     chatService.stop();
                     chatService.start();
+                }
+                else {
+                    String message = chatText.getText().toString();
+                    sendMessage(message);
                 }
             }
         });
