@@ -116,7 +116,7 @@ public class ScanDevices  extends Activity{
             Intent intent = new Intent();
             intent.putExtra(DEVICE_ADDRESS, address);
             intent.putExtra(DEVICE_2_ADDRESS, "");
-            intent.putExtra(DEVICE_2_NAME,"");
+//            intent.putExtra(DEVICE_2_NAME,"");
 
             setResult(Activity.RESULT_OK, intent);
             finish();
@@ -138,7 +138,7 @@ public class ScanDevices  extends Activity{
             Intent intent = new Intent();
             intent.putExtra(DEVICE_ADDRESS, address);
             intent.putExtra(DEVICE_2_ADDRESS, addressFinal);
-            intent.putExtra(DEVICE_2_NAME,nameFinal);
+//            intent.putExtra(DEVICE_2_NAME,nameFinal);
 
             setResult(Activity.RESULT_OK, intent);
             finish();

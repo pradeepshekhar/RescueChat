@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static int connectFlag;
     public static String addressFinal;
-    public static String nameFinal;
+    public static String nameFinal = null;
 
     private Devices devices;
     private Devices devices1;
@@ -117,14 +117,14 @@ public class MainActivity extends AppCompatActivity {
                         String fromName = connectedDeviceName;
                         String fromAddress = connectedDeviceAddress;
                         try {
-                            Thread.sleep(1000);
+                            Thread.sleep(1500);
                         } catch (InterruptedException e) {
 //                            e.printStackTrace();
                         }
                         BluetoothDevice device = bluetoothAdapter.getRemoteDevice(readAddress);
                         chatService.connect(device, false);
                         try {
-                            Thread.sleep(2000);
+                            Thread.sleep(2500);
                         } catch (InterruptedException e) {
 //                            e.printStackTrace();
                         }
@@ -187,9 +187,9 @@ public class MainActivity extends AppCompatActivity {
 
             //check if device already exists in table2
             int RSSI12 = dbHandler.isExits2(b);
-            int onehop = dbHandler.isExits1(b);
+//            int onehop = dbHandler.isExits1(b);
 
-            if(RSSI12!= 1000 && onehop == 1000){  //This condition is satisfied when the device already exists in database
+            if(RSSI12!= 1000){// && onehop == 1000){  //This condition is satisfied when the device already exists in database
                 String addressInter = dbHandler.addressInter(b);
                 int RSSI11 = dbHandler.rssi1(addressInter); //rssi between inter for path1 and us
                 int RSSI21 = dbHandler.rssi1(connectedDeviceAddress);
@@ -198,7 +198,7 @@ public class MainActivity extends AppCompatActivity {
                     dbHandler.updateRow2(devices, b, connectedDeviceName, connectedDeviceAddress);
                 }
             }
-            else if (RSSI12 == 1000 && onehop == 1000){
+            else if (RSSI12 == 1000){// && onehop == 1000){
                 //Add the new device into the table
                 dbHandler.addDevice2(devices, connectedDeviceName, connectedDeviceAddress);
             }
@@ -364,7 +364,7 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            }
             try {
-                Thread.sleep(1500);
+                Thread.sleep(2000);
             } catch (InterruptedException e) {
 //                            e.printStackTrace();
             }
