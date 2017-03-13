@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity {
                         chatArrayAdapter.add("Me to "+connectedDeviceName+":\n" + writeMessage);
                     break;
                 case MESSAGE_READ:
+//                    toastTime();
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     if(readMessage.startsWith("TID") )
@@ -162,6 +163,11 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
     });
+
+    private void toastTime(){
+//        Toast.makeText(this,Long.toString(System.currentTimeMillis()),Toast.LENGTH_LONG).show();
+    }
+
 
 //    private void sendFromTable1(){
 //        int count1 = dbHandler.getCount1();
@@ -364,7 +370,7 @@ public class MainActivity extends AppCompatActivity {
 //                }
 //            }
             try {
-                Thread.sleep(2000);
+                Thread.sleep(2500);
             } catch (InterruptedException e) {
 //                            e.printStackTrace();
             }
@@ -413,6 +419,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (message.length() > 0) {
+//            Toast.makeText(this,Long.toString(System.currentTimeMillis()),Toast.LENGTH_LONG).show();
             byte[] send = message.getBytes();
             chatService.write(send);
             outStringBuffer.setLength(0);
