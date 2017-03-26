@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             Thread.sleep(2500);
                         } catch (InterruptedException e) {
-                            e.printStackTrace();
+//                            e.printStackTrace();
                         }
                         sendMessage("NF2"+fromName+"\n"+fromAddress+readMessage);
                         chatService.stop();
