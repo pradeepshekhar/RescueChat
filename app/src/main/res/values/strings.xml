@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RescueChat</string>
+    <string name="app_name">HopChat</string>
     <string name="send">send</string>
     <string name="scan">Connect</string>
     <string name="title_paired_devices">SECOND HOP DEVICES</string>
