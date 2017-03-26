@@ -87,8 +87,6 @@ public class MainActivity extends AppCompatActivity {
                     byte[] writeBuf = (byte[]) msg.obj;
                     String writeMessage = new String(writeBuf);
                     if(writeMessage.startsWith("TID")) {
-//                        writeMessage = writeMessage.substring(3);
-//                        chatArrayAdapter.add("Me:\n" + writeMessage);
                     }
                     else if(writeMessage.startsWith("NFM")){
                         writeMessage = writeMessage.substring(20);
@@ -100,12 +98,10 @@ public class MainActivity extends AppCompatActivity {
                         chatArrayAdapter.add("Me to "+connectedDeviceName+":\n" + writeMessage);
                     break;
                 case MESSAGE_READ:
-//                    toastTime();
                     byte[] readBuf = (byte[]) msg.obj;
                     String readMessage = new String(readBuf, 0, msg.arg1);
                     if(readMessage.startsWith("TID") )
                     {
-//                        sendFromTable1();
                         if(readMessage.length()>3) {
                             readMessage = readMessage.substring(3);
                             addToTable(readMessage);
@@ -127,13 +123,11 @@ public class MainActivity extends AppCompatActivity {
                         try {
                             Thread.sleep(2500);
                         } catch (InterruptedException e) {
-//                            e.printStackTrace();
+                            e.printStackTrace();
                         }
                         sendMessage("NF2"+fromName+"\n"+fromAddress+readMessage);
                         chatService.stop();
                         chatService.start();
-
-//                        chatArrayAdapter.add(connectedDeviceName+":\n"+readAddress+readMessage);
                     }
                     else if(readMessage.startsWith("NF2") && readMessage.length()>3)
                     {
@@ -165,21 +159,9 @@ public class MainActivity extends AppCompatActivity {
     });
 
     private void toastTime(){
-//        Toast.makeText(this,Long.toString(System.currentTimeMillis()),Toast.LENGTH_LONG).show();
+        Toast.makeText(this,Long.toString(System.currentTimeMillis()),Toast.LENGTH_LONG).show();
     }
 
-
-//    private void sendFromTable1(){
-//        int count1 = dbHandler.getCount1();
-//        String recNames ="";
-//        String [] dbNames ;
-//        for(int i=0;i<count1;i++){
-//            dbNames = dbHandler.deviceAt1(i+1);
-//            recNames+= dbNames[0]+"\n"+dbNames[1]+"\n"+dbNames[2]+"\n";
-//        }
-//        recNames="TID"+recNames;
-//        sendMessage(recNames);
-//    }
     private void addToTable(String names)
     {
         //This function stores the second hop range devices data into "SecondHopDevices" table
@@ -193,7 +175,6 @@ public class MainActivity extends AppCompatActivity {
 
             //check if device already exists in table2
             int RSSI12 = dbHandler.isExits2(b);
-//            int onehop = dbHandler.isExits1(b);
 
             if(RSSI12!= 1000){// && onehop == 1000){  //This condition is satisfied when the device already exists in database
                 String addressInter = dbHandler.addressInter(b);
@@ -246,19 +227,9 @@ public class MainActivity extends AppCompatActivity {
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-//                if(connectFlag == 1) {
-//                    String message = chatText.getText().toString();
-//                    sendMessage(message);
-//                }
-//                else
                 if(connectFlag == 2) {
                     String message = chatText.getText().toString();
                     sendMessage("NFM"+addressFinal+message);
-//                    try {
-//                        Thread.sleep(1000);
-//                    } catch (InterruptedException e) {
-////                            e.printStackTrace();
-//                    }
                     chatService.stop();
                     chatService.start();
                 }
@@ -285,7 +256,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                     recNames="TID"+recNames;
                     sendMessage(recNames);
-//                        showToast();
                 }
             }
         );
@@ -308,7 +278,6 @@ public class MainActivity extends AppCompatActivity {
             dbNames = dbHandler.deviceAt2(i+1);
             recNames+= dbNames[0]+"\n"+dbNames[1]+"\n"+dbNames[2]+"\n"+dbNames[3]+"\n"+dbNames[4]+"\n";
         }
-//        Toast.makeText(this,dbNames[1],Toast.LENGTH_LONG).show();
         Intent serverIntent = new Intent(this, ScanDevices.class);
         serverIntent.putExtra("serverIntent",recNames);
         startActivityForResult(serverIntent, REQUEST_CONNECT_DEVICE_INSECURE);
@@ -358,33 +327,15 @@ public class MainActivity extends AppCompatActivity {
     Runnable r = new Runnable() {
         @Override
         public void run() {
-//            // What do you want the thread to do
-//            long futureTime = (System.currentTimeMillis()+ 10000);//10 sec
-//
-//            while (System.currentTimeMillis()< futureTime){
-//                // Don't need to sync when you are not using a thread e,g, Tutorial 39
-//                synchronized(this){
-//                    try {
-//                        wait(futureTime - System.currentTimeMillis());
-//                    }catch(Exception e){}
-//                }
-//            }
             try {
                 Thread.sleep(2500);
             } catch (InterruptedException e) {
-//                            e.printStackTrace();
             }
             waitMsgHandler.sendEmptyMessage(0);
 
         }
     };
-//    public void wait1(){
-//        try {
-//            Thread.sleep(1500);
-//        } catch (InterruptedException e) {
-////                            e.printStackTrace();
-//        }
-//    }
+
     private void ensureDiscoverable() {
         if (bluetoothAdapter.getScanMode() != BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(
@@ -419,7 +370,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (message.length() > 0) {
-//            Toast.makeText(this,Long.toString(System.currentTimeMillis()),Toast.LENGTH_LONG).show();
             byte[] send = message.getBytes();
             chatService.write(send);
             outStringBuffer.setLength(0);

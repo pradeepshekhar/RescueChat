@@ -30,7 +30,8 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
     public static final String COLUMN_DEVICEADDRESS3 = "InterDeviceAddress";
     public static final String COLUMN_DEVICERSSI2 = "InterDeviceRSSI";
 
-    public DeviceDBHandler(Context context){//, String name, SQLiteDatabase.CursorFactory factory, int version) {
+    //defining the constructor
+    public DeviceDBHandler(Context context){
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
@@ -61,7 +62,7 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //Add a new row
+    //Add a new row to table1
     public void addDevice1(Devices devices){
         ContentValues values = new ContentValues();
         values.put(COLUMN_DEVICENAME1, devices.get_deviceName());
@@ -86,27 +87,31 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
-    //Delete a product from the table
+    //Function to delete a row from table1
     public void deleteDevice1(String address){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME1 + " WHERE " + COLUMN_DEVICEADDRESS1 + " = \"" + address + "\";");
     }
 
+    //Function to delete a row from table2
     public void deleteDevice2(String address){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_NAME2 + " WHERE " + COLUMN_DEVICEADDRESS2 + " = \"" + address + "\";");
     }
 
+    //Function to delete table1
     public void deletetable1(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME1);
     }
 
+    //Function to delete table2
     public void deletetable2(){
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME2);
     }
 
+    //This function is created so that the table can be updated every time the user scans
     public void createtable1(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "CREATE TABLE " + TABLE_NAME1 + " ( " +
@@ -132,7 +137,7 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         db.execSQL(query2);
     }
 
-    //get specific row from Table1
+    //get specific row from Table1 based on id
     public String [] deviceAt1(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME1,new String[]{COLUMN_DEVICENAME1, COLUMN_DEVICEADDRESS1, COLUMN_DEVICERSSI1},COLUMN_ID1+"=?",new String[]{String.valueOf(id)},null,null,null,null);
@@ -143,7 +148,7 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         return deviceIs;
     }
 
-    //get specific row from table2
+    //get specific row from table2 based on id
     public String [] deviceAt2(int id){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME2,new String[]{COLUMN_DEVICENAME2, COLUMN_DEVICEADDRESS2, COLUMN_DEVICENAME3, COLUMN_DEVICEADDRESS3, COLUMN_DEVICERSSI2},COLUMN_ID1+"=?",new String[]{String.valueOf(id)},null,null,null,null);
@@ -154,20 +159,21 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         return deviceIs;
     }
 
+    //Function to return the number of items in table1
     public int getCount1(){
         SQLiteDatabase db = this.getReadableDatabase();
         int count = (int) DatabaseUtils.queryNumEntries(db,TABLE_NAME1);
         return count;
     }
 
+    //Function to return the number of items in table2
     public int getCount2(){
         SQLiteDatabase db = this.getReadableDatabase();
         int count = (int) DatabaseUtils.queryNumEntries(db,TABLE_NAME2);
         return count;
     }
 
-
-
+    //Function to check if a device already exists in table1 based on its address
     public int isExits1(String address){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " +TABLE_NAME1+" WHERE "+COLUMN_DEVICEADDRESS1+" = \""+address+"\"";
@@ -179,6 +185,7 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         return 1000;
     }
 
+    //Function to check if a device already exists in table2 based on its address
     public int isExits2(String address){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT * FROM " +TABLE_NAME2+" WHERE "+COLUMN_DEVICEADDRESS2+" = \""+address+"\"";
@@ -190,6 +197,7 @@ public class DeviceDBHandler extends SQLiteOpenHelper {
         return 1000;
     }
 
+    //Fuction to replace a row with new device
     public void updateRow2(Devices devices, String address, String interName, String interAddress){
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "UPDATE " +TABLE_NAME2+" SET "
